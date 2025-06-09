@@ -1,7 +1,9 @@
 {
-    "cmake.sourceDirectory": "/workspaces/poc-c++-wasm/cpp-project",
-    "cmake.cmakePath": "/home/vscode/6.6.3/wasm_singlethread/bin/qt-cmake",
+    "cmake.sourceDirectory": "/workspaces/poc-c++-wasm",
+    "cmake.cmakePath": "/usr/local/bin/cmake",
     "cmake.emscriptenSearchDirs": [
-        "/home/vscode/emsdk/upstream/emscripten"
-    ]
+        "/opt/emsdk/upstream/emscripten"
+    ],
+    "cmake.useCMakePresets": "always",
+    "cmake.configureOnOpen": true
 }

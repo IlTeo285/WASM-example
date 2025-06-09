@@ -1,65 +1,90 @@
 # README.md
 
-# C++ Project
+# Qt WASM Demo
 
-This project is a C++ application that demonstrates the use of C++20 features. It includes a simple library and unit tests to validate its functionality.
+This project is a Qt application that demonstrates building a C++ Qt application for WebAssembly with a dark theme interface.
 
 ## Project Structure
 
 ```
-cpp-project
-├── src
-│   ├── main.cpp          # Entry point of the application
-│   └── lib
-│       ├── example.cpp   # Implementation of library functions
-│       └── example.hpp   # Header file for library functions
-├── tests
-│   └── test_example.cpp   # Unit tests for the library
-├── CMakeLists.txt        # CMake configuration file
-├── .gitignore             # Git ignore file
-└── README.md              # Project documentation
+poc-c++-wasm/
+├── src/
+│   ├── main.cpp        # Application entry point
+│   ├── mainwindow.cpp  # Main window implementation
+│   └── mainwindow.h    # Main window header
+├── CMakeLists.txt      # CMake configuration
+└── README.md          # Project documentation
 ```
+
+## Prerequisites
+
+- Qt 6.x
+- CMake 3.16 or higher
+- Emscripten SDK (for WebAssembly build)
 
 ## Building the Project
 
-To build the project, you need to have CMake installed. Follow these steps:
+### Native Build
 
-1. Clone the repository:
-   ```
-   git clone <repository-url>
-   cd cpp-project
-   ```
+1. Create a build directory:
+```bash
+mkdir build && cd build
+```
 
-2. Create a build directory:
-   ```
-   mkdir build
-   cd build
-   ```
+2. Configure with CMake:
+```bash
+cmake ..
+```
 
-3. Run CMake to configure the project:
-   ```
-   cmake ..
-   ```
+3. Build the project:
+```bash
+make
+```
 
-4. Build the project:
-   ```
-   cmake --build .
-   ```
+### WebAssembly Build
+
+1. First, activate Emscripten environment:
+```bash
+source /path/to/emsdk/emsdk_env.sh
+```
+
+2. Create a WASM build directory:
+```bash
+mkdir build-wasm && cd build-wasm
+```
+
+3. Configure with CMake for WASM:
+```bash
+cmake .. -DCMAKE_TOOLCHAIN_FILE=$EMSDK/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake
+```
+
+4. Build the WASM target:
+```bash
+make
+```
 
 ## Running the Application
 
-After building the project, you can run the application with the following command:
-```
-./<executable-name>
+### Native Build
+```bash
+./qtapp
 ```
 
-## Running Tests
+### WebAssembly Build
+The WASM build will generate HTML and JS files. You can serve them using any web server:
+```bash
+python3 -m http.server 8000
+```
 
-To run the unit tests, you can use the following command:
-```
-./<test-executable-name>
-```
+Then open your browser and navigate to `http://localhost:8000`
+
+## Features
+
+- Dark mode interface
+- Responsive layout
+- Click counter demonstration
+- WebAssembly compatibility
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is open source and available under the MIT License.

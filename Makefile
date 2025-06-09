@@ -2,7 +2,8 @@
 # Commands
 CMAKE := /usr/local/bin/cmake
 EMCMAKE := $(shell which emcmake)
-QT_CMAKE := /opt/qt/6.6.3/wasm_singlethread/bin/qt-cmake
+QT_CMAKE_DESK := /opt/qt/6.6.3/gcc_64/bin/qt-cmake
+QT_CMAKE_WASM := /opt/qt/6.6.3/wasm_singlethread/bin/qt-cmake
 PYTHON3 := $(shell which python3)
 
 # Check required commands
@@ -25,7 +26,7 @@ all: desktop wasm
 .PHONY: desktop
 desktop:
 	@echo "Building desktop version..."
-	$(CMAKE) --preset desktop -B $(BUILD_DESKTOP)
+	$(QT_CMAKE_DESK) --preset desktop -B $(BUILD_DESKTOP)
 	$(CMAKE) --build $(BUILD_DESKTOP)
 
 # WASM build
@@ -33,7 +34,7 @@ desktop:
 .PHONY: wasm
 wasm:
 	@echo "Building WASM version..."
-	$(QT_CMAKE) --preset=wasm -B $(BUILD_WASM)
+	$(QT_CMAKE_WASM) --preset=wasm -B $(BUILD_WASM)
 	$(CMAKE) --build $(BUILD_WASM)
 
 # Clean builds
