@@ -2,7 +2,7 @@
 # Commands
 CMAKE := /usr/local/bin/cmake
 EMCMAKE := $(shell which emcmake)
-QT_CMAKE := $(shell which qt-cmake)
+QT_CMAKE := /opt/qt/6.6.3/wasm_singlethread/bin/qt-cmake
 PYTHON3 := $(shell which python3)
 
 # Check required commands
@@ -29,10 +29,11 @@ desktop:
 	$(CMAKE) --build $(BUILD_DESKTOP)
 
 # WASM build
+# emcmake $(CMAKE) --preset wasm -B $(BUILD_WASM) --debug-find-pkg=Qt6Core
 .PHONY: wasm
 wasm:
 	@echo "Building WASM version..."
-	emcmake $(CMAKE) --preset wasm -B $(BUILD_WASM) --debug-find-pkg=Qt6Core
+	$(QT_CMAKE) --preset=wasm -B $(BUILD_WASM)
 	$(CMAKE) --build $(BUILD_WASM)
 
 # Clean builds
