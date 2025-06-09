@@ -2,11 +2,6 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/alpine
 {
 	"name": "Debian Coding Development",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	//"build": {
-	//	"dockerfile": "../Dockers/Dockerfile.debian-prod",
-	//	"target": "strobe-manager-dev"
-	//},
 	"image": "ilteo285/debian-coding-environment:bookworm-slim-qt-dev",
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
