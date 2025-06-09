@@ -1,0 +1,30 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "desktop",
+      "displayName": "Desktop Build",
+      "description": "Default desktop build using Ninja generator",
+      "binaryDir": "${sourceDir}/build-desktop",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_PREFIX_PATH": "/opt/qt/6.6.3/gcc_64", 
+        "CMAKE_TOOLCHAIN_FILE": ""
+      }
+    },
+    {
+      "name": "wasm",
+      "displayName": "WASM Build",
+      "description": "WebAssembly build using Emscripten",
+      "binaryDir": "${sourceDir}/build-wasm",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "/opt/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+        "QT_CHAINLOAD_TOOLCHAIN_FILE": "/opt/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+        "CMAKE_BUILD_TYPE": "Release",
+        "QT_HOST_PATH": "/opt/qt/6.6.3/gcc_64",
+        "CMAKE_PREFIX_PATH": "/opt/qt/6.6.3/wasm_singlethread",
+        "Qt6_DIR": "/opt/qt/6.6.3/wasm_singlethread/lib/cmake/Qt6"
+      }
+    }
+  ]
+}

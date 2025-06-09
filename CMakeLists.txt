@@ -1,0 +1,49 @@
+cmake_minimum_required(VERSION 3.16)
+
+project(cpp-project VERSION 1.0 LANGUAGES CXX)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# Enable Qt debug output
+set(QT_DEBUG_FIND_PACKAGE ON)
+set(CMAKE_FIND_DEBUG_MODE ON)
+
+# Check if we're building for WASM
+if(EMSCRIPTEN)
+    set(CMAKE_EXECUTABLE_SUFFIX ".js")
+endif()
+
+message(STATUS "Qt Path: ${QT_PATH}")
+message(STATUS "Qt6_DIR: ${Qt6_DIR}")
+message(STATUS "CMake Toolchain File: ${CMAKE_TOOLCHAIN_FILE}")
+
+# Configure Qt
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
+qt_standard_project_setup()
+
+qt_add_executable(helloworld
+    src/main.cpp
+    src/mainwindow.cpp
+    src/mainwindow.h
+)
+
+target_link_libraries(helloworld PRIVATE Qt6::Widgets)
+
+if(EMSCRIPTEN)
+    # WASM specific flags
+    set_target_properties(helloworld PROPERTIES
+        LINK_FLAGS "-s WASM=1 -s USE_WEBGL2=1 -s FULL_ES3=1 -s WASM_BIGINT=1 -s NO_EXIT_RUNTIME=0 -s \"EXPORTED_RUNTIME_METHODS=['ccall','cwrap']\" --bind"
+    )
+    
+    # Copy HTML shell for WASM
+    #configure_file(
+    #    ${QT_PATH}/lib/qt6/plugins/platforms/wasm_shell.html 
+    #    ${CMAKE_BINARY_DIR}/helloworld.html 
+    #    COPYONLY
+    #)
+endif()
