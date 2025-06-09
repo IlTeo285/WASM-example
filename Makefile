@@ -53,5 +53,5 @@ run-desktop: desktop
 # Serve WASM version
 .PHONY: serve-wasm
 serve-wasm: wasm
-	@echo "Serving WASM version on http://localhost:8080"
-	python3 -m http.server 8080 --directory $(BUILD_WASM)
+	@echo "Serving WASM version on http://localhost:8123"
+	python3 -m http.server 8123 --directory $(BUILD_WASM)

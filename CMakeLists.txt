@@ -39,7 +39,14 @@ target_link_libraries(helloworld PRIVATE Qt6::Widgets)
 if(EMSCRIPTEN)
     # WASM specific flags
     set_target_properties(helloworld PROPERTIES
-        LINK_FLAGS "-s WASM=1 -s USE_WEBGL2=1 -s FULL_ES3=1 -s WASM_BIGINT=1 -s NO_EXIT_RUNTIME=0 -s \"EXPORTED_RUNTIME_METHODS=['ccall','cwrap']\" --bind"
+        LINK_FLAGS "-s WASM=1 \
+                   -s USE_WEBGL2=1 \
+                   -s FULL_ES3=1 \
+                   -s WASM_BIGINT=1 \
+                   -s NO_EXIT_RUNTIME=1 \
+                   -s \"EXPORTED_RUNTIME_METHODS=['ccall','cwrap']\" \
+                   -s ALLOW_MEMORY_GROWTH=1 \
+                   --bind"
     )
 
     # First try to locate wasm_shell.html
@@ -57,15 +64,15 @@ if(EMSCRIPTEN)
         message(FATAL_ERROR "Could not find wasm_shell.html. Please check your Qt WASM installation.")
     else()
         message(STATUS "Found WASM shell template at: ${WASM_SHELL}")
-        configure_file(${WASM_SHELL} ${CMAKE_BINARY_DIR}/helloworld.html COPYONLY)
+    #   configure_file(${WASM_SHELL} ${CMAKE_BINARY_DIR}/helloworld.html COPYONLY)
         
         # Rename to index.html after build
-        add_custom_command(
-            TARGET helloworld POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E rename 
-                ${CMAKE_BINARY_DIR}/helloworld.html 
-                ${CMAKE_BINARY_DIR}/index.html
-            COMMENT "Renaming helloworld.html to index.html"
-        )
+        # add_custom_command(
+        #    TARGET helloworld POST_BUILD
+        #    COMMAND ${CMAKE_COMMAND} -E rename 
+        #        ${CMAKE_BINARY_DIR}/helloworld.html 
+        #        ${CMAKE_BINARY_DIR}/index.html
+        #    COMMENT "Renaming helloworld.html to index.html"
+        #)
     endif()
 endif()

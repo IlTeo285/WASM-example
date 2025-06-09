@@ -2,6 +2,9 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QSizePolicy>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QTextStream>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     QWidget *centralWidget = new QWidget(this);
@@ -35,20 +38,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     
     QVBoxLayout *layout = new QVBoxLayout(centralWidget);
     
-    button = new QPushButton("Click me!", this);
     label = new QLabel("Hello Qt!", this);
+    button = new QPushButton("Click me!", this);
+    fileButton = new QPushButton("Open File", this);
     
-    // Imposta la size policy per permettere l'espansione verticale
-    button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    // Set size policies
     label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    fileButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     
-    // Allinea la label al centro sia orizzontalmente che verticalmente
     label->setAlignment(Qt::AlignCenter);
     
-    layout->addWidget(label, 1);  // stretch factor 1
-    layout->addWidget(button, 1); // stretch factor 1 (uguale al label per 50-50)
+    layout->addWidget(label, 2);       // More space for content
+    layout->addWidget(button, 1);
+    layout->addWidget(fileButton, 1);
     
     connect(button, &QPushButton::clicked, this, &MainWindow::handleButton);
+    connect(fileButton, &QPushButton::clicked, this, &MainWindow::handleFileOpen);
     
     setMinimumSize(250, 150);
     setWindowTitle("Qt Example");
@@ -58,4 +64,30 @@ void MainWindow::handleButton() {
     static int clicks = 0;
     clicks++;
     label->setText(QString("Clicks: %1").arg(clicks));
+}
+
+void MainWindow::handleFileOpen() {
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Open Text File"),
+        QString(),
+        tr("Text Files (*.txt);;All Files (*)"));
+        
+    if (fileName.isEmpty())
+        return;
+        
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::warning(this,
+            tr("Error"),
+            tr("Cannot open file %1:\n%2.")
+            .arg(fileName)
+            .arg(file.errorString()));
+        return;
+    }
+
+    QTextStream in(&file);
+    QString content = in.readAll();
+    file.close();
+    
+    label->setText(content);
 }
